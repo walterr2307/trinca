@@ -30,12 +30,12 @@ int ler_qtd_jogs()
     return qtd_jogs;
 }
 
-struct jogador organizar_jogador_cartas(struct jogador jog)
+struct jogador organizar_jogador_por_cartas(struct jogador jog)
 {
     struct carta copia;
-    int troca;
+    int troca = 1;
 
-    do
+    while(troca)
     {
         troca = 0;
 
@@ -59,7 +59,6 @@ struct jogador organizar_jogador_cartas(struct jogador jog)
             }
         }
     }
-    while (troca);
 
     return jog;
 }
@@ -78,7 +77,7 @@ void gerar_jogadores()
         printf("Insira o nome do %d* jogador: ", i + 1);
         scanf("%14[^\n]", jogs[i].nome);
 
-        jogs[i] = organizar_jogador_cartas(jogs[i]);
+        jogs[i] = organizar_jogador_por_cartas(jogs[i]);
     }
 }
 

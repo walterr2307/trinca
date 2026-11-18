@@ -4,6 +4,49 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+void imprimir_por_ordem_numerica(struct carta cartas[], int qtd_cartas)
+{
+    int troca = 1, copia_ind, indices[qtd_cartas];
+    struct carta copia;
+
+    for(int i = 0; i < qtd_cartas; i++)
+        indices[i] = i;
+
+    while(troca)
+    {
+        troca = 0;
+
+        for (int i = qtd_cartas - 1; i > 0; i--)
+        {
+            char *prox_naipe = cartas[i].naipe;
+            char *naipe = cartas[i - 1].naipe;
+
+            int comparacao = strcmp(naipe, prox_naipe);
+
+            int prox_num = cartas[i].num;
+            int num = cartas[i - 1].num;
+
+            if (num > prox_num || (num == prox_num && comparacao > 0))
+            {
+                copia = cartas[i];
+                cartas[i] = cartas[i - 1];
+                cartas[i - 1] = copia;
+
+                copia_ind = indices[i];
+                indices[i] = indices[i - 1];
+                indices[i - 1] = copia_ind;
+
+                troca = 1;
+            }
+        }
+    }
+
+    for (int i = 0; i < qtd_cartas; i++)
+        printf("%d.%s ", indices[i] + 1, cartas[i].formato);
+
+    printf("\n\n");
+}
+
 void imprimir_cartas(int qtd_cartas)
 {
     fflush(stdout);
@@ -14,8 +57,15 @@ void imprimir_cartas(int qtd_cartas)
     system("clear");
 #endif
 
+    struct carta cartas[qtd_cartas];
+
+    for (int i = 0; i < qtd_cartas; i++)
+        cartas[i] = jog.cartas[i];
+
     printf("Carta na Mesa:\n\n\t%s\n", ult_carta.formato);
     printf("\nCartas de %s:\n", jog.nome);
+
+    imprimir_por_ordem_numerica(cartas, qtd_cartas);
 
     for (int i = 0; i < qtd_cartas; i++)
         printf("%d.%s ", i + 1, jog.cartas[i].formato);
