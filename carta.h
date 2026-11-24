@@ -4,7 +4,7 @@
 struct carta
 {
     int num;
-    char naipe[4];
+    int naipe;
     char formato[9];
 };
 

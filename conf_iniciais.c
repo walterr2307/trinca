@@ -1,9 +1,10 @@
+#include "cartas_ordem_num.h"
+#include "conf_iniciais.h"
 #include "jogador.h"
 #include "main.h"
 #include "ui.h"
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 
 int ler_qtd_jogs()
 {
@@ -30,6 +31,22 @@ int ler_qtd_jogs()
     return qtd_jogs;
 }
 
+void comprar_primeira_carta()
+{
+    int c;
+
+    imprimir_cartas(9);
+
+    while ((c = getchar()) != '\n' && c != EOF);
+
+    printf("\n\nPressione qualquer tecla para comprar a primeira carta: ");
+
+    getchar();
+
+    jog.cartas[9] = baralho[103];
+    cartas_ordem_num[9] = baralho[103];
+}
+
 struct jogador organizar_jogador_por_cartas(struct jogador jog)
 {
     struct carta copia;
@@ -39,23 +56,17 @@ struct jogador organizar_jogador_por_cartas(struct jogador jog)
     {
         troca = 0;
 
-        for (int i = 8; i > 0; i--)
+        for (int i = 0; i < 8; i++)
         {
-            char *prox_naipe = jog.cartas[i].naipe;
-            char *naipe = jog.cartas[i - 1].naipe;
-
-            int comparacao = strcmp(naipe, prox_naipe);
-
-            int prox_num = jog.cartas[i].num;
-            int num = jog.cartas[i - 1].num;
-
-            if (comparacao > 0 || (comparacao == 0 && num > prox_num))
+            if (jog.cartas[i].naipe > jog.cartas[i + 1].naipe ||
+                    jog.cartas[i].naipe == jog.cartas[i + 1].naipe &&
+                    jog.cartas[i].num > jog.cartas[i + 1].num)
             {
-                copia = jog.cartas[i];
-                jog.cartas[i] = jog.cartas[i - 1];
-                jog.cartas[i - 1] = copia;
-
                 troca = 1;
+
+                copia = jog.cartas[i];
+                jog.cartas[i] = jog.cartas[i + 1];
+                jog.cartas[i + 1] = copia;
             }
         }
     }
@@ -81,29 +92,29 @@ void gerar_jogadores()
     }
 }
 
-struct carta gerar_carta(int num, char naipe[])
+struct carta gerar_carta(int num, int naipe, char emoji[])
 {
     struct carta carta;
 
     switch (num)
     {
     case 1:
-        sprintf(carta.formato, "[A|%s]", naipe);
+        sprintf(carta.formato, "[A|%s]", emoji);
         break;
     case 11:
-        sprintf(carta.formato, "[J|%s]", naipe);
+        sprintf(carta.formato, "[J|%s]", emoji);
         break;
     case 12:
-        sprintf(carta.formato, "[Q|%s]", naipe);
+        sprintf(carta.formato, "[Q|%s]", emoji);
         break;
     case 13:
-        sprintf(carta.formato, "[K|%s]", naipe);
+        sprintf(carta.formato, "[K|%s]", emoji);
         break;
     default:
-        sprintf(carta.formato, "[%d|%s]", num, naipe);
+        sprintf(carta.formato, "[%d|%s]", num, emoji);
     }
 
-    strcpy(carta.naipe, naipe);
+    carta.naipe = naipe;
     carta.num = num;
 
     return carta;
@@ -111,15 +122,14 @@ struct carta gerar_carta(int num, char naipe[])
 
 void gerar_meio_baralho(int i)
 {
-    char naipes[4][4] = {"♠", "♥", "♦", "♣"};
-
+    char emojis[4][4] = {"♣", "♥", "♠", "♦"};
 
     for (int j = 0; j < 4; j++)
     {
-        char *naipe = naipes[j];
+        char *emoji = emojis[j];
 
         for (int num = 1; num < 14; num++)
-            baralho[i++] = gerar_carta(num, naipe);
+            baralho[i++] = gerar_carta(num, j, emoji);
     }
 }
 
@@ -129,21 +139,6 @@ void gerar_baralho()
         gerar_meio_baralho(i);
 
     embaralhar();
-}
-
-void comprar_primeira_carta()
-{
-    int c;
-
-    imprimir_cartas(9);
-
-    while ((c = getchar()) != '\n' && c != EOF);
-
-    printf("\n\nPressione ENTER para comprar a primeira carta: ");
-
-    getchar();
-
-    jog.cartas[9] = baralho[103];
 }
 
 void iniciar_jogo()
@@ -160,6 +155,9 @@ void iniciar_jogo()
     ind_jog = rand() % qtd_jogs;
     jog = jogs[ind_jog];
 
+    inds_ordem_num[9] = 10;
+
+    ajustar_cartas_ordem_numerica(9);
     comprar_primeira_carta();
     jogar_carta();
 }

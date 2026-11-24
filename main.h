@@ -1,6 +1,8 @@
 #ifndef MAIN_H
 #define MAIN_H
 
+#include "jogador.h"
+
 extern int ind_jog, qtd_jogs, ind_baralho, qtd_cartas_baralho;
 extern struct carta ult_carta, penult_carta, baralho[104];
 extern struct jogador jog, jogs[4];

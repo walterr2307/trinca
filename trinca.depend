@@ -1,29 +1,34 @@
 # depslib dependency file v1.0
-1795025770 source:c:\users\walter.cavalcante\documents\c\trinca\conf_iniciais.c
+1795538310 source:c:\users\walter.cavalcante\documents\c\trinca\conf_iniciais.c
+	"cartas_ordem_num.h"
+	"conf_iniciais.h"
 	"jogador.h"
 	"main.h"
 	"ui.h"
 	<stdio.h>
 	<stdlib.h>
-	<string.h>
 
 1795024895 c:\users\walter.cavalcante\documents\c\trinca\jogador.h
 	"carta.h"
 
-1795024895 c:\users\walter.cavalcante\documents\c\trinca\carta.h
+1795538118 c:\users\walter.cavalcante\documents\c\trinca\carta.h
 
-1795024895 c:\users\walter.cavalcante\documents\c\trinca\main.h
+1795537988 c:\users\walter.cavalcante\documents\c\trinca\main.h
+	"jogador.h"
 
 1795024895 c:\users\walter.cavalcante\documents\c\trinca\ui.h
 
-1795024895 source:c:\users\walter.cavalcante\documents\c\trinca\ui.c
+1795538493 source:c:\users\walter.cavalcante\documents\c\trinca\ui.c
+	"cartas_ordem_num.h"
+	"formacao_trincas.h"
 	"jogador.h"
 	"main.h"
+	"ui.h"
 	<ctype.h>
 	<stdio.h>
 	<stdlib.h>
 
-1795024895 source:c:\users\walter.cavalcante\documents\c\trinca\main.c
+1795538310 source:c:\users\walter.cavalcante\documents\c\trinca\main.c
 	"conf_iniciais.h"
 	"jogador.h"
 	"menu.h"
@@ -34,9 +39,28 @@
 	<string.h>
 	<windows.h>
 
-1795024895 c:\users\walter.cavalcante\documents\c\trinca\conf_iniciais.h
+1795538310 c:\users\walter.cavalcante\documents\c\trinca\conf_iniciais.h
 
 1795024895 c:\users\walter.cavalcante\documents\c\trinca\menu.h
 
 1795024895 source:c:\users\walter.cavalcante\documents\c\trinca\menu.c
+
+1795538493 source:c:\users\walter.cavalcante\documents\c\trinca\formacao_trincas.c
+	"formacao_trincas.h"
+	"jogador.h"
+	"main.h"
+	"ui.h"
+	<stdio.h>
+	<string.h>
+
+1795537098 c:\users\walter.cavalcante\documents\c\trinca\formacao_trincas.h
+	"carta.h"
+
+1795538310 source:c:\users\walter.cavalcante\documents\c\trinca\cartas_ordem_num.c
+	"cartas_ordem_num.h"
+	"jogador.h"
+	"main.h"
+
+1795537926 c:\users\walter.cavalcante\documents\c\trinca\cartas_ordem_num.h
+	"carta.h"
 

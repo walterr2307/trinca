@@ -1,3 +1,4 @@
+#include "cartas_ordem_num.h"
 #include "conf_iniciais.h"
 #include "jogador.h"
 #include "menu.h"
@@ -11,7 +12,7 @@
 #include <windows.h>
 #endif
 
-int ind_jog, qtd_jogs, ind_baralho = 0, qtd_cartas_baralho = 104;
+int ind_jog, ind_baralho = 0, qtd_jogs, qtd_cartas_baralho = 104;
 struct carta ult_carta, penult_carta, baralho[104];
 struct jogador jog, jogs[4];
 
@@ -35,15 +36,9 @@ void reorganizar_cartas()
 
     for (int i = 8; i > 0; i--)
     {
-        char *prox_naipe = jog.cartas[i].naipe;
-        char *naipe = jog.cartas[i - 1].naipe;
-
-        int comparacao = strcmp(naipe, prox_naipe);
-
-        int prox_num = jog.cartas[i].num;
-        int num = jog.cartas[i - 1].num;
-
-        if (comparacao > 0 || (comparacao == 0 && num > prox_num))
+        if (jog.cartas[i - 1].naipe > jog.cartas[i].naipe ||
+                jog.cartas[i - 1].naipe == jog.cartas[i].naipe &&
+                jog.cartas[i - 1].num > jog.cartas[i].num)
         {
             copia = jog.cartas[i];
             jog.cartas[i] = jog.cartas[i - 1];
@@ -61,6 +56,8 @@ void verificar_embaralhamento()
     if (++ind_baralho == qtd_cartas_baralho)
     {
         ind_baralho = 0;
+
+        strcpy(ult_carta.formato, "[    ]");
         embaralhar();
     }
 }
@@ -72,6 +69,8 @@ void comprar_carta()
     if (comprou_do_baralho())
     {
         jog.cartas[9] = baralho[ind_baralho];
+        cartas_ordem_num[9] = baralho[ind_baralho];
+
         baralho[ind_baralho] = ult_carta;
 
         verificar_embaralhamento();
@@ -79,6 +78,8 @@ void comprar_carta()
     else
     {
         jog.cartas[9] = ult_carta;
+        cartas_ordem_num[9] = ult_carta;
+
         ult_carta = penult_carta;
     }
 }
@@ -94,19 +95,9 @@ void jogar_carta()
 
     for (int i = ind_carta; i < 9; i++)
         jog.cartas[i] = jog.cartas[i + 1];
-}
 
-int finalizar_jogo()
-{
-    imprimir_cartas(9);
-
-    /*while (deseja_formar_trincas())
-    {
-    	if(formou_trincas())
-    		return 1;
-    }*/
-
-    return 0;
+    reorganizar_cartas();
+    ajustar_cartas_ordem_numerica(9);
 }
 
 int continuar_jogo()
@@ -132,11 +123,6 @@ void atualizar_jogador()
     jog = jogs[ind_jog];
 }
 
-void mostrar_vencedor()
-{
-    printf("\n\t%s venceu!!!\n", jog.nome);
-}
-
 int main()
 {
 #ifdef _WIN32
@@ -150,7 +136,8 @@ int main()
 
     while(jogo_continua)
     {
-        reorganizar_cartas();
+        ajustar_cartas_ordem_numerica(9);
+
         comprar_carta();
         jogar_carta();
 
